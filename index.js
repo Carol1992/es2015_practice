@@ -35,3 +35,24 @@ for(let [key, value] of map){
 }
 for(let [key] of map){console.log(key)};
 for(let [,value] of map){console.log(value)};
+
+function is32Bit(c){
+  return c.codePointAt(0) > 0xFFFF;
+}
+console.log(is32Bit("𠮷"));
+console.log(is32Bit("a"));
+console.log(is32Bit("ab"));
+console.log(String.fromCodePoint(0x20BB7));
+
+var name = "carol", time = new Date();
+document.getElementById("app").append(`
+		Hello ${name}, today is ${time}
+`);
+
+//tag函数的第一个参数是一个数组，该数组的成员是模板字符串中那些没有变量替换的部分，
+//tag函数的其他参数都是模板字符串各个变量被替换后的值
+//第一个参数：['Hello ', ' world ', '']
+//第二个参数：15
+//第三个参数：5
+var a = 10, b = 5;
+tag`Hello ${a+b} world ${a-b}`;
