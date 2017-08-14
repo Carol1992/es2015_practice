@@ -1,1 +1,3 @@
-console.log([0,1,2].map(item => item + 1));
+import * as constants from ./js/es1.js;
+
+console.log(constants.A);

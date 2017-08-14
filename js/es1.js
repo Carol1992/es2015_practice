@@ -1,1 +1,2 @@
-console.log([0,1,2].map(item => item + 1));
+export const A = 0;
+export const B = 8;
