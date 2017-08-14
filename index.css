@@ -1,0 +1,9 @@
+html{
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+}
+#app{
+  text-align: center;
+  font-size: 2rem;
+}
