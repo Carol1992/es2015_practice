@@ -6,4 +6,31 @@ html{
 #app{
   text-align: center;
   font-size: 2rem;
+  margin-bottom: 50px;
 }
+#choice-zone{
+  width: 600px;
+  margin: auto;
+  font-size: 1rem;
+}
+.colors>div, .sizes>div, .types>div{
+  display: inline-block;
+  width: 70px;
+  height: 40px;
+  background-color: #fcfcfc;
+  border: 1px solid #000;
+  text-align: center;
+  margin-right: 20px;
+  cursor: pointer;
+}
+.colors>div>span, .sizes>div>span, .types>div>span{
+  line-height: 40px;
+}
+#choice-zone>div{
+  margin-bottom: 20px;
+}
+.price span:not(:first-child){
+  color: orangered;
+  font-size: 1.5rem;
+}
+[v-cloak] {display: none;}

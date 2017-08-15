@@ -9,12 +9,33 @@
     <div class="application" id="app">
 
     </div>
-    <div class="choice-zone" id="choice-zone">
-      
+    <div class="choice-zone" id="choice-zone" v-cloak>
+      <div class="price">
+        <span>价格：</span><span class="price-min">{{stock_groups2.minPrice}}</span>~<span class="price-max">{{stock_groups2.maxPrice}}</span>
+      </div>
+      <div class="colors">
+        <span>颜色：</span>
+        <div class="color" v-for="color in stock_groups2.colors">
+          <span>{{color}}</span>
+        </div>
+      </div>
+      <div class="sizes">
+        <span>尺寸：</span>
+        <div class="size" v-for="size in stock_groups2.sizes">
+          <span>{{size}}</span>
+        </div>
+      </div>
+      <div class="types">
+        <span>厚度：</span>
+        <div class="type" v-for="type in stock_groups2.types">
+          <span>{{type}}</span>
+        </div>
+      </div>
     </div>
     <script src="https://google.github.io/traceur-compiler/bin/traceur.js"></script>
     <script src="https://google.github.io/traceur-compiler/bin/BrowserSystem.js"></script>
     <script src="https://google.github.io/traceur-compiler/src/bootstrap.js"></script>
+    <script src="src/js/vue.js"></script>
     <script src="index.js"></script>
   </body>
 </html>

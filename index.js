@@ -76,22 +76,33 @@ var stock_groups = {
 	colors:[],
 	sizes:[],
 	prices:[],
-	type:[]
+	types:[],
+	all_sizes:["XS","S","M","L","XL"],
+	all_types:["超薄","薄","中厚","厚"]
 };
 for(let i=0; i<stocks.length; i++){
 	var {颜色, 尺码, 价格, 厚度, skuId} = stocks[i];
 	stock_groups.colors.push(颜色);
 	stock_groups.sizes.push(尺码);
 	stock_groups.prices.push(价格);
-	stock_groups.type.push(厚度);
+	stock_groups.types.push(厚度);
 }
 var stock_groups2 = {
-	colors: new Set(stock_groups.colors),
-	sizes:new Set(stock_groups.sizes),
-	prices:new Set(stock_groups.prices),
-	type:new Set(stock_groups.type)
+	colors: Array.from(new Set(stock_groups.colors)),
+	sizes:Array.from(new Set(stock_groups.all_sizes.filter(v => new Set(stock_groups.sizes).has(v)))),
+	prices:Array.from(new Set(stock_groups.prices)),
+	types:Array.from(new Set(stock_groups.all_types.filter(v => new Set(stock_groups.types).has(v))))
 }
+stock_groups2.minPrice = Math.min(...stock_groups2.prices);
+stock_groups2.maxPrice = Math.max(...stock_groups2.prices);
 console.log(stock_groups2);
-for(let v of stock_groups2.colors){
-	console.log(v);
-}
+
+var vm = new Vue({
+	el: "#choice-zone",
+	data: {
+		stock_groups2:stock_groups2
+	},
+	methods: {
+
+	}
+});
