@@ -38,6 +38,15 @@ babel 默认不会转换Iterator, Generator, Set, Map, Promise, Proxy, Reflect, 
 ### 正则的扩展
 
 ### 数值的扩展
+1. ES6提供了二进制和八进制数值的写法，分别用前缀0b(0B)和0o(0O)表示，如果要将其转化为十进制数值，要用Number方法。
+2. Number.isFinite()和Number.isNaN()与传统的全局方法isFinite()和isNaN()的区别在于，传统方法先调用Number()将非数值转为数值，再进行判断。而新方法只对数值有效，对于非数值一律返回false.
+3. Number.parseInt()和Number.parseFloat()与传统的全局方法parseInt()和parseFloat()一样。
+4. Number.isInteger()用来判断一个值是否为整数。
+5. es6在Number对象上新增了一个极小的常量——Number.EPSILON,目的在于为浮点数计算设置一个误差范围。
+6. JavaScript能够准确表示的整数范围在-2的53次方和2的53次方之间，不包含端点，超过这个范围就无法精确表示。Number.isSafeInteger()用来判断一个整数是否落在这个范围内。验证运算结果是否落在安全整数范围内，应该验证每个参与运算的值。
+7. Math.trunc()方法用于去除一个数的小数部分，返回整数部分；对于非数值，会先将其转为数值，对于空值或无法截取整数的值，会返回NaN.
+8. Math.sign()方法用于判断一个数是正数、负数、0，除了返回+1, -1, 0,-0,其余返回NaN。
+9. Math.cbrt()用于计算一个数的立方根；Math.clz32()返回一个数的32位无符号整数形式有多少个前导0.
 
 ### 数组的扩展
 
