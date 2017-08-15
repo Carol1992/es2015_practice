@@ -72,37 +72,57 @@ var stocks = [
 	{颜色:"黑", 尺码:"S", 价格:120, 厚度:"薄", skuId:"00003"},
 	{颜色:"红", 尺码:"XL", 价格:210, 厚度:"厚", skuId:"00004"}
 ];
-var stock_groups = {
-	colors:[],
-	sizes:[],
-	prices:[],
-	types:[],
-	all_sizes:["XS","S","M","L","XL"],
-	all_types:["超薄","薄","中厚","厚"]
-};
-for(let i=0; i<stocks.length; i++){
-	var {颜色, 尺码, 价格, 厚度, skuId} = stocks[i];
-	stock_groups.colors.push(颜色);
-	stock_groups.sizes.push(尺码);
-	stock_groups.prices.push(价格);
-	stock_groups.types.push(厚度);
+function displayChoice(stocks){
+	var stock_groups = {
+		colors:[],
+		sizes:[],
+		prices:[],
+		types:[],
+		all_sizes:["XS","S","M","L","XL"],
+		all_types:["超薄","薄","中厚","厚"]
+	};
+	for(let i=0; i<stocks.length; i++){
+		var {颜色, 尺码, 价格, 厚度, skuId} = stocks[i];
+		stock_groups.colors.push(颜色);
+		stock_groups.sizes.push(尺码);
+		stock_groups.prices.push(价格);
+		stock_groups.types.push(厚度);
+	}
+	var stock_groups2 = {
+		colors: Array.from(new Set(stock_groups.colors)),
+		sizes:Array.from(new Set(stock_groups.all_sizes.filter(v => new Set(stock_groups.sizes).has(v)))),
+		prices:Array.from(new Set(stock_groups.prices)),
+		types:Array.from(new Set(stock_groups.all_types.filter(v => new Set(stock_groups.types).has(v))))
+	}
+	stock_groups2.minPrice = Math.min(...stock_groups2.prices);
+	stock_groups2.maxPrice = Math.max(...stock_groups2.prices);
+	console.log(stock_groups2);
+	return stock_groups2;
 }
-var stock_groups2 = {
-	colors: Array.from(new Set(stock_groups.colors)),
-	sizes:Array.from(new Set(stock_groups.all_sizes.filter(v => new Set(stock_groups.sizes).has(v)))),
-	prices:Array.from(new Set(stock_groups.prices)),
-	types:Array.from(new Set(stock_groups.all_types.filter(v => new Set(stock_groups.types).has(v))))
-}
-stock_groups2.minPrice = Math.min(...stock_groups2.prices);
-stock_groups2.maxPrice = Math.max(...stock_groups2.prices);
-console.log(stock_groups2);
 
 var vm = new Vue({
 	el: "#choice-zone",
 	data: {
-		stock_groups2:stock_groups2
+		stock_groups2:displayChoice(stocks),
+		current_price:''
 	},
 	methods: {
-
+		getNewData: function(){
+			var colors = ["红","黑","蓝","粉","白","青","灰","藏蓝","黄"],
+			prices = [90,100,110,123,124,150,190,200,213,230];
+			sizes = ["XS","S","M","L","XL"],
+			types = ["超薄","薄","中厚","厚"],
+			stocks = [];
+			for (let i=0; i<5; i++){
+				var item = {
+					颜色:colors[Math.round(Math.random()*(colors.length-1))],
+					价格:prices[Math.round(Math.random()*(prices.length-1))],
+					尺码:sizes[Math.round(Math.random()*(sizes.length-1))],
+					厚度:types[Math.round(Math.random()*(types.length-1))]
+				};
+				stocks.push(item);
+			}
+			this.stock_groups2 = displayChoice(stocks);
+		}
 	}
 });

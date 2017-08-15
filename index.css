@@ -34,3 +34,14 @@ html{
   font-size: 1.5rem;
 }
 [v-cloak] {display: none;}
+.submit, .refresh{
+  display: inline-block;
+}
+button{
+  background-color: orangered;
+  border:1px solid transparent;
+  color: #fff;
+  text-align: center;
+  padding: 5px 8px;
+  cursor: pointer;
+}
