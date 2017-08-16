@@ -126,3 +126,53 @@ var vm = new Vue({
 		}
 	}
 });
+
+//es5:空字符会被改为默认值，这个坑你踩过的亲
+function test(x,y){
+	y = y || "world";
+	console.log(x,y);
+}
+test("hello","");//hello world
+//es6:参数变量是默认声明的，所以不能用let或const再次声明
+function test2(x, y="world"){
+	console.log(x,y);
+}
+test2("hello","");//hello
+//与结构赋值默认值结合使用
+function myfetch(url, { body='', method='GET', headers={}}){
+	console.log(method);
+}
+myfetch("https://baidu.com",{});//GET
+//myfetch("https://baidu.com");//报错
+
+let insert = (value) => ({into: (array) => ({after: (afterValue) => {
+	array.splice(array.indexOf(afterValue) + 1, 0, value);
+	return array;
+}})});
+console.log(insert(2).into([1,3]).after(1));
+
+function factorial(n){
+	if (n === 1) return 1;
+	return n * factorial(n - 1);
+}
+function factorial2(n, total=1){
+	if (n === 1) return total;
+	return factorial2(n - 1, n * total);
+}
+
+function tailFactorial(n, total){
+	if(n === 1) return total;
+	return tailFactorial(n - 1, n * total);
+}
+function factorial3(n){
+	return tailFactorial(n,1);
+}
+
+//应用参数默认值，可以指定某一个参数不得省略，如果省略就会抛出一个错误
+function throwIfMissing(){
+	throw new Error("Missing parameter");
+}
+function foo(mustProvided = throwIfMissing()){
+	return mustProvided;
+}
+//foo();
