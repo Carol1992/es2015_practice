@@ -38,10 +38,16 @@ html{
   display: inline-block;
 }
 button{
-  background-color: orangered;
+  background-color: grey;
   border:1px solid transparent;
   color: #fff;
   text-align: center;
   padding: 5px 8px;
   cursor: pointer;
+}
+.refresh>button{
+  background-color: orangered;
+}
+.hasStock{
+  background-color: orangered;
 }

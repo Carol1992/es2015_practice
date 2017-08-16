@@ -104,7 +104,10 @@ var vm = new Vue({
 	el: "#choice-zone",
 	data: {
 		stock_groups2:displayChoice(stocks),
-		current_price:''
+		selected:false,
+		selectedPrice: 0,
+		hasStock: true,
+		selectedItem:{}
 	},
 	methods: {
 		getNewData: function(){
@@ -123,6 +126,31 @@ var vm = new Vue({
 				stocks.push(item);
 			}
 			this.stock_groups2 = displayChoice(stocks);
+		},
+		checkRemainingOptions: function(e, choice, opt){
+			document.getElementById(choice).style.backgroundColor = "#eee";
+			switch (opt) {
+				case "color":
+					//选择了color,哪些size和type是可选的，不可选的用灰色表示
+					//选择了color+size/type,哪些type/size是可选的，不可选的用灰色表示
+					//选择了color+size+type有货
+					//用户重新点击灰色选项
+					vm.selectedItem.color = choice;
+					break;
+				case "size":
+					//todo
+					vm.selectedItem.size = choice;
+					break;
+				case "type":
+					//todo
+					vm.selectedItem.type = choice;
+					break;
+				default:
+					console.log(choice, opt);
+			}
+		},
+		addToCart: function(){
+			console.log(vm.selectedItem);
 		}
 	}
 });

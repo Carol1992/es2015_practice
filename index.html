@@ -12,28 +12,34 @@
     <div class="choice-zone" id="choice-zone" v-cloak>
       <div class="price">
         <span>价格：</span>
-        <span>{{stock_groups2.minPrice}}~{{stock_groups2.maxPrice}}</span>
+        <span v-if="selected">{{selectedPrice}}</span>
+        <span v-else>{{stock_groups2.minPrice}}~{{stock_groups2.maxPrice}}</span>
       </div>
       <div class="colors">
         <span>颜色：</span>
-        <div class="color" v-for="color in stock_groups2.colors">
+        <div class="color" v-for="color in stock_groups2.colors" :id="color" @click="checkRemainingOptions($event, color, 'color')">
           <span>{{color}}</span>
         </div>
       </div>
       <div class="sizes">
         <span>尺寸：</span>
-        <div class="size" v-for="size in stock_groups2.sizes">
+        <div class="size" v-for="size in stock_groups2.sizes" :id="size" @click="checkRemainingOptions($event, size, 'size')">
           <span>{{size}}</span>
         </div>
       </div>
       <div class="types">
         <span>厚度：</span>
-        <div class="type" v-for="type in stock_groups2.types">
+        <div class="type" v-for="type in stock_groups2.types" :id="type" @click="checkRemainingOptions($event, type, 'type')">
           <span>{{type}}</span>
         </div>
       </div>
       <div class="submit">
-        <button type="button" name="button">加入购物车</button>
+        <button type="button" name="button"
+        :disabled="!hasStock"
+        :class="{hasStock: hasStock}"
+        @click="addToCart">
+        加入购物车
+      </button>
       </div>
       <div class="refresh">
         <button type="button" name="button" @click="getNewData">刷新数据</button>
