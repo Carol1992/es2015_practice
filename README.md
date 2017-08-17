@@ -97,6 +97,16 @@ babel 默认不会转换Iterator, Generator, Set, Map, Promise, Proxy, Reflect, 
 ### 二进制数组
 
 ### Set 和 Map 数据结构
+1. Set类似于数组，但是成员的值都是唯一的，没有重复的值。Set内部判断两个值是否不同使用的算法类似于精确相等运算符，唯一的例外是NaN等于自身，而精确相等运算符认为NaN不等于自身。
+2. Set实例的属性和方法。属性：Set.prototype.constructor; Set.prototype.size; 方法：add(value), delete(value),has(value),clear()
+3. Set实例有4个遍历方法，可用于遍历成员：keys(), values(), entries(), forEach().由于Set结构没有键名，只有键值，所有keys()和values()方法的行为完全一致。
+4. 使用Set可以很容易实现并集、交集、差集，去除数组重复元素等。
+5. WeakSet与Set类似，但其成员只能是对象，不能是其他类型的值；其次，WeakSet中的对象都是弱引用，即垃圾回收机制不考虑WeakSet对该对象的引用，因此它是不可以遍历的。没有size属性，没有clear()方法。一个用处是储存DOM节点，而不必担心这些节点从文档移除时会引发内存泄露。
+6. Map类似于对象，也是键值对的集合，但是“键”的范围不限于字符串，各种类型的值（包括对象）都可以当做键，是一种更完善的Hash结构实现。
+7. Map的键实际上是跟内存地址绑定，只要内存地址不一样，就视为两个键。这就解决了同名属性碰撞的问题，我们扩展别人的库时，如果使用对象作为键名，不用担心自己的属性与原作者的属性同名。如果Map的键是一个简单类型的值（数字、字符串、布尔值），则只要两个值严格相等，Map就会将其视为一个键，包括0和-0。虽然NaN不严格等于自身，但Map将其视为同一个键。
+8. Map实例的属性和方法：属性：size; 方法：set(key, value), get(key), has(key), delete(key), clear()
+9. Map原生提供3个遍历器生成函数和一个遍历方法：keys(), values(), entries(), forEach()
+10. WeakMap结构与Map结构基本类似，唯一的区别是它只接受对象作为键名（null除外），不接受其他类型的值作为键名，而且键名所指向的对象不计入垃圾回收机制。没有clear()方法，没有size属性。
 
 ### Iterator 和 for...of循环
 

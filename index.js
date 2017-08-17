@@ -278,3 +278,13 @@ function getArea(shape, options){
 	return area;
 }
 console.log(getArea(shapeType.tri, {width:100, height:100}));
+
+var arr = [1,2,3,4,5,6,7,7,7];
+var s1 = new Set();
+arr.map(x => s1.add(x));
+console.log(s1);
+var s2 = new Set();
+arr.forEach(x => s2.add(x));
+console.log(s2);
+a1 = arr.filter(x => x > 4);
+console.log(a1);
