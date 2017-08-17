@@ -74,3 +74,44 @@ babel 默认不会转换Iterator, Generator, Set, Map, Promise, Proxy, Reflect, 
 11. 尾递归：函数调用自身称为递归，如果尾调用自身就称为尾递归，递归非常耗内存，因为需要同时保存成千上百个调用帧，很容易发生栈溢出错误(stack overflow).尾递归的实现往往需要改写递归函数，确保最后一步只调用自身，做到这一点的方法，就是把所有用到的内部变量改写成函数的参数。
 
 ### 对象的扩展
+1. 属性的简洁表示法
+2. 对象的属性名表达式和简洁表示法不能同时使用
+3. Object.is用来比较两个值是否严格相等，它与严格比较运算符的行为基本一致。不同之处只有2个：一是+0不等于-0；二是NaN等于自身。
+4. Objct.assign用来将源对象(source)的所有可枚举属性复制到目标对象(target)，它至少需要两个对象作为参数，第一个参数是目标对象，后面的参数都是源对象，只要有一个参数不是对象，就会抛出TypeError错误。如果目标对象与源对象有同名属性，或多个源有同名属性，则后面的属性会覆盖前面的属性。Object.assign只复制自身属性，不可枚举的属性和继承的属性不会被复制。
+5. Object.assign可以用于为对象添加属性，为对象添加方法，克隆对象，合并多个对象，为属性指定默认值
+6. 对象的每个属性都有一个描述对象，用于控制该属性的行为，Object.getOwnPropertyDescriptor可以获取该属性的描述对象。如果enumerable属性的值为false，就表示某些操作会忽略当前属性。ES6有5个操作会忽略enumerable为false的属性：for...in, Object.keys(), JSON.stringify(), Object.assign(), Reflect.enumerable
+7. 如何遍历对象的属性：for...in, Object.keys(), Object.getOwnPropertyNames(obj), Object.getOwnPropertySymbols(obj), Reflect.ownKeys(obj), Reflect.enumerable(obj)
+8. 属性遍历次序规则：首先遍历所有属性名为数值的属性，按照数字排序；其次遍历所有属性名为字符串的属性，按照生成时间排序；最后遍历所有属性名为Symbol的属性，按照生成时间排序。
+9. “__proto__”属性原来读取或设置当前对象的prototype对象。但是最好不要使用这个属性，而是使用Object.setPrototypeOf(), Object.getPrototypeOf() 或 Object.create()
+
+### Symbol
+1. ES6引入一种新的原始数据类型Symbol，表示独一无二的值。所以JS语言一共有7种数据类型：Undefined, Null, Boolean, String, Number, Object, Symbol. Symbol值通过Symbol函数生成，只要属性名属于Symbol类型，就是独一无二的，可以保证不会与其他属性名冲突。Symbol函数可以接受一个字符串作为参数，表示对Symbol实例的描述，主要是为了在控制台显示或转为字符串时比较容易区分。Symbol 函数的参数只表示对当前Symbol值的描述，因此相同参数的Symbol函数的返回值是不相等的。
+2. 以Symbol值作为名称的属性不会被常规方法遍历到，我们可以利用这个特性为对象定义一些非私有但又希望只用于内部的方法。
+3. Symbol的值作为对象属性名时不能使用点运算符，只能使用方括号，如果不放在方括号中，属性的键名会被当做字符串，而不是Symbol
+4. Symbol可以用于消除魔术字符串，魔术字符串是指在代码中多次出现，与代码形成强耦合的某一个具体字符串或数值。消除魔术字符串常用的方法就是把它写成一个变量。
+5. Symbol.for()接受一个字符串作为参数，然后搜索有没有以该参数为名称的Symbol值，如果有就返回这个Symbol值，没有就新建并返回一个以该字符串为名称的Symbol值。如果你调用Symbol.for("cat")30次，每次都返回同一个Symbol值，但是调用Symbol("cat")30次，会返回30个不同的Symbol值。
+6. es6还提供11个内置的Symbol值，指向语言内部使用的方法。
+
+### Proxy 和 Reflect
+
+### 二进制数组
+
+### Set 和 Map 数据结构
+
+### Iterator 和 for...of循环
+
+### Generator 函数
+
+### Promise对象
+
+### 异步操作和 async 函数
+
+### Class
+
+### 修饰器
+
+### Module
+
+### 编程风格
+
+### 读懂ECMAScript规格

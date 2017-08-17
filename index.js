@@ -204,3 +204,77 @@ function foo(mustProvided = throwIfMissing()){
 	return mustProvided;
 }
 //foo();
+var person = {
+	sayName: function(){
+		console.log(this.name);
+	},
+	get firstName(){
+		return "carol";
+	}
+};
+//person.sayName.name = "sayName"; person.firstName.name = "get firstName"
+
+//{b: 'c'} Object.assign 只复制自身属性，不可枚举的属性和继承的属性不会被复制
+Object.assign({b: 'c'}, Object.defineProperty({}, 'invisible', {
+	emumerable: false,
+	value: 'hello'
+}))
+
+var ms = {};
+function getItem(key){return key in ms ? ms[key] : null;}
+function setItem(key, value){ms[key] = value;}
+function clear(){ms = {};}
+//module.exports = {getItem, setItem, clear}
+// modules.export = {
+// 	getItem: getItem,
+// 	setItem: setItem,
+// 	clear: clear
+// };
+
+let sym = Symbol();
+console.log(typeof sym);
+var sym1 = Symbol("foo");
+console.log(sym);
+console.log(sym1);
+
+var obj = {};
+var a = Symbol('a'), b = Symbol('b');
+obj[a] = "Hello";
+obj[b] = "World";
+console.log(Object.getOwnPropertySymbols(obj));
+
+var size = Symbol('size');
+class Collection {
+	constructor(){
+		this[size] = 0;
+	}
+	add(item) {
+		this[this[size]] = item;
+		this[size]++;
+	}
+	static sizeOf(instance){
+		return instance[size];
+	}
+}
+var x2 = new Collection();
+console.log(Collection.sizeOf(x2));
+x2.add("foo");
+console.log(Collection.sizeOf(x2));
+console.log(Object.keys(x2));
+console.log(Object.getOwnPropertyNames(x2))
+console.log(Object.getOwnPropertySymbols(x2));
+
+var shapeType = {
+	//tri: 'Triangle'
+	tri: Symbol()
+};
+function getArea(shape, options){
+	var area = 0;
+	switch (shape) {
+		case shapeType.tri:
+			area = .5 * options.width * options.height;
+			break;
+	}
+	return area;
+}
+console.log(getArea(shapeType.tri, {width:100, height:100}));
