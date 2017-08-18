@@ -38,7 +38,7 @@
           <span>-</span>
         </div>
         <div class="nums">
-          <input type="text" name="" value="1" id="nums" @change="checkNum">
+          <input type="text" name="" value="1" id="nums" @change="checkNum" v-model="buyNums">
         </div>
         <div class="plus" @click="addMore">
           <span>+</span>
@@ -47,7 +47,15 @@
           <span>库存{{selectedStocks}}件</span>
         </div>
       </div>
-      <div class="submit">
+      <div class="buynow">
+        <button type="button" name="button"
+        :disabled="!hasStock"
+        :class="{hasStock: hasStock}"
+        @click="buyNow">
+        立即购买
+      </button>
+    </div>
+      <div class="addtocart">
         <button type="button" name="button"
         :disabled="!hasStock"
         :class="{hasStock: hasStock}"

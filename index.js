@@ -108,7 +108,8 @@ var vm = new Vue({
 		selectedPrice: 0,
 		hasStock: true,
 		selectedStocks: 900,
-		selectedItem:{}
+		selectedItem:{},
+		buyNums:1
 	},
 	methods: {
 		getNewData: function(){
@@ -152,16 +153,27 @@ var vm = new Vue({
 			}
 		},
 		addToCart: function(){
+			vm.selectedItem.nums = vm.buyNums;
+			console.log(vm.selectedItem);
+		},
+		buyNow: () => {
+			vm.selectedItem.nums = vm.buyNums;
 			console.log(vm.selectedItem);
 		},
 		reduce:() => {
 			var elt = document.getElementById("nums");
-			if(+elt.value > 1) elt.value--;
+			if(+elt.value > 1) {
+				elt.value--;
+				vm.buyNums = elt.value;
+			}
 			else return;
 		},
 		addMore:() => {
 			var elt = document.getElementById("nums");
-			if(+elt.value < vm.selectedStocks) elt.value++;
+			if(+elt.value < vm.selectedStocks) {
+				elt.value++;
+				vm.buyNums = elt.value;
+			}
 			else return;
 		},
 		checkNum:() => {
@@ -305,3 +317,39 @@ arr.forEach(x => s2.add(x));
 console.log(s2);
 a1 = arr.filter(x => x > 4);
 console.log(a1);
+
+//数组原生具有遍历器接口，部署在数组的Symbol.iterator属性上
+let arr2 = ['a', 'b', 'c'];
+let iter = arr2[Symbol.iterator]();
+l(iter.next());
+l(iter.next());
+l(iter.next());
+l(iter.next());
+l(iter.next());
+
+function l(val){
+	console.log(val);
+}
+
+//使用Promise异步加载图片
+function loadImage(url){
+	return new Promise(function(resolve, reject){
+		var image = new Image();
+		image.onload = function(){
+			resolve(image);
+		};
+		image.onerror = function(){
+			reject(new Error('could not load image at ' + url));
+		};
+		image.src = url;
+	});
+}
+
+//用Promise对象实现的AJAX操作
+var getJson = function(url){
+	var promise = new Promise(function(resolve, reject){
+		var client = new XMLHttpRequest();
+		client.open("GET", url);
+		client.onreadystatechange = handler;
+	})
+}
