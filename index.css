@@ -36,6 +36,7 @@ html{
 [v-cloak] {display: none;}
 .submit, .refresh{
   display: inline-block;
+  margin-left: 20px;
 }
 button{
   background-color: grey;
@@ -44,10 +45,49 @@ button{
   text-align: center;
   padding: 5px 8px;
   cursor: pointer;
+  height: 35px;
 }
 .refresh>button{
   background-color: orangered;
 }
 .hasStock{
   background-color: orangered;
+}
+.nums-and-stocks{
+  display: block;
+}
+.nums-and-stocks>div{
+  display: inline-block;
+  float: left;
+  border: 1px solid #ddd;
+  box-sizing: border-box;
+  text-align: center;
+  height: 35px;
+  width: 30px;
+}
+.minus>span, .plus>span{
+  line-height: 35px;
+  font-weight: bolder;
+  cursor: pointer;
+}
+.nums{
+  width: 70px !important;
+}
+.nums>input{
+  background-color: transparent;
+  border: none;
+  outline: none;
+  height: 35px;
+  text-align: center;
+  width: 100%;
+}
+.stocks{
+  width: auto !important;
+  border: none !important;
+  margin-left: 10px;
+}
+.stocks>span{
+  line-height: 35px;
+  font-size: 0.9rem;
+  color: #bbb;
 }

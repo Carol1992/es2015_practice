@@ -107,6 +107,7 @@ var vm = new Vue({
 		selected:false,
 		selectedPrice: 0,
 		hasStock: true,
+		selectedStocks: 900,
 		selectedItem:{}
 	},
 	methods: {
@@ -135,6 +136,7 @@ var vm = new Vue({
 					//选择了color+size/type,哪些type/size是可选的，不可选的用灰色表示
 					//选择了color+size+type有货
 					//用户重新点击灰色选项
+					//存货与价格，用户关注的就是有没有货，有的话购买价格是多少
 					vm.selectedItem.color = choice;
 					break;
 				case "size":
@@ -151,6 +153,21 @@ var vm = new Vue({
 		},
 		addToCart: function(){
 			console.log(vm.selectedItem);
+		},
+		reduce:() => {
+			var elt = document.getElementById("nums");
+			if(+elt.value > 1) elt.value--;
+			else return;
+		},
+		addMore:() => {
+			var elt = document.getElementById("nums");
+			if(+elt.value < vm.selectedStocks) elt.value++;
+			else return;
+		},
+		checkNum:() => {
+			var elt = document.getElementById("nums");
+			if(+elt.value < 1) elt.value = 1;
+			if(+elt.value > vm.selectedStocks) elt.value = vm.selectedStocks;
 		}
 	}
 });

@@ -33,6 +33,20 @@
           <span>{{type}}</span>
         </div>
       </div>
+      <div class="nums-and-stocks">
+        <div class="minus" @click="reduce">
+          <span>-</span>
+        </div>
+        <div class="nums">
+          <input type="text" name="" value="1" id="nums" @change="checkNum">
+        </div>
+        <div class="plus" @click="addMore">
+          <span>+</span>
+        </div>
+        <div class="stocks">
+          <span>库存{{selectedStocks}}件</span>
+        </div>
+      </div>
       <div class="submit">
         <button type="button" name="button"
         :disabled="!hasStock"
