@@ -123,5 +123,13 @@ babel 默认不会转换Iterator, Generator, Set, Map, Promise, Proxy, Reflect, 
 ### Module
 
 ### 编程风格
-
-### 读懂ECMAScript规格
+1. 块级作用域：let 取代 var, 因为var存在变量提升效用，let命令则没有这个问题，变量应该先声明后使用。
+2. 全局常量和线性安全：let 和 const之间，优先选择const,尤其是在全局环境中，不应该设置变量，应该设置常量。
+3. 字符串：静态字符串一律使用单引号或反引号，不使用双引号。动态字符串使用反引号。
+4. 解构赋值：使用数组成员对变量赋值，优先使用解构赋值；函数的参数如果是对象的成员，优先使用解构赋值；如果函数返回多个值，优先使用对象的解构赋值。
+5. 对象：单行定义的对象，最后一个成员不以逗号结尾；多行定义的对象，最后一个对象以逗号结尾；如果添加属性不可避免，要使用Object.assign方法。
+6. 函数：那些需要使用函数表达式的场合，尽量使用箭头函数，因为这样更简洁，且绑定了this, 且箭头函数取代了Function.prototype.bind, 不要再用self/_this/that绑定this. 布尔值不可以直接作为参数；使用默认值语法设置函数参数的默认值；所有配置项都应该集中在一个对象，放在最后一个参数；不要在函数内使用arguments对象，使用rest运算符代替。
+7. Map结构：只有模拟实体对象时才使用Object，如果只是需要key:value的数据结构，则使用Map，因为Map有内建的遍历机制。
+8. Class:总是用class取代需要prototype的操作；使用extends实现继承，因为这样更简单，不会有破坏instanceof运算的危险。
+9. 模块：Module语法是javascript模块的标准写法，要坚持这种写法，使用import取代require；使用export取代module.exports.如果模块只有一个输出值，就使用export default；如果模块有多个输出值，就不使用export default.不要在模块输入中使用通配符，因为这样可以确保模块中有一个默认输出。如果模块默认输出一个函数，函数名的首字母应该小写；如果默认输出一个对象，对象的首字母应该大写。
+10. ESLint 的使用：Airbnb语法规则+.eslintrc文件
