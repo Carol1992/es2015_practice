@@ -368,7 +368,7 @@ var getJson = function(url){
 	});
 	return promise;
 };
-getJson("/posts.json").then(function(json){
+getJson("https://github.com/Carol1992/dataVisualization_d3js/blob/master/json/city.json").then(function(json){
 	console.log(json);
 }, function(error){
 	console.error(error);

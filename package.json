@@ -1,0 +1,22 @@
+{
+  "name": "es2015_practice",
+  "version": "1.0.0",
+  "description": "1. 使用traceur,需要在html文件中引入3个js文件，比较简单，但每个有es6代码的页面都需要多加载3个文件\r 2. 安装babel-preset-es2015,在当前目录下新建.babelrc文件({\"presets\": ['es2015']}),使用babel buildfile.js -o sourcefile.js 将写有es6代码的文件转为es5代码的文件输出",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Carol1992/es2015_practice.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Carol1992/es2015_practice/issues"
+  },
+  "homepage": "https://github.com/Carol1992/es2015_practice#readme",
+  "dependencies": {
+    "express": "^4.15.4"
+  }
+}
