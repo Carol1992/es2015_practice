@@ -109,10 +109,23 @@ babel 默认不会转换Iterator, Generator, Set, Map, Promise, Proxy, Reflect, 
 10. WeakMap结构与Map结构基本类似，唯一的区别是它只接受对象作为键名（null除外），不接受其他类型的值作为键名，而且键名所指向的对象不计入垃圾回收机制。没有clear()方法，没有size属性。
 
 ### Iterator 和 for...of循环
+1. ES6创造了一种新的遍历命令for...of，iterator接口主要供for...of消费。iterator的遍历过程是这样的：创建一个指针对象，指定当前数据结构的起始位置，第一次调用指针对象的next()方法，可以将指针对象指向数据结构的第一个成员，第二次调用就指向第二个成员，不断调用直到它指向数据结构的结束位置。next()方法返回一个对象，有着value和done两个属性，value属性表示当前的内部状态的值，是yield语句后面那个表达式的值，done属性是一个布尔值，表示是否遍历结束。
+2. 在ES6中，有3类数据结构原生具备iterator接口：数组、某些类似数组的对象，以及Set和Map结构。对于这三类数据结构，不用自己写遍历器生成函数，for...of会自动遍历他们，。其他数据结构的iterator接口，都需要自己在Symbol.iterator属性上部署，这样才会被for...of循环遍历。
 
 ### Generator 函数
+1. Generator函数的调用方法与普通函数一样，不同的是，调用Generator函数后，该函数并不执行，而是返回一个指向内部状态的指针，也即一个遍历器对象。下一步，必须调用next()方法。使得指针移动到下一个状态。Generator函数是分段执行的，yield函数是暂停执行的标记，而next()方法可以恢复执行。next()方法返回一个对象，有着value和done两个属性，value属性表示当前的内部状态的值，是yield语句后面那个表达式的值，done属性是一个布尔值，表示是否遍历结束。
+2. 正常函数只能返回一个值，因为只能执行一次return语句，Generator函数可以返回一系列的值，因为可以有任意多条yield语句。yield不能用在普通函数中，否则会报错。
+3. yield语句本身没有返回值，或者说总是返回undefined，next()方法可以带一个参数，该参数会被当做上一条yield语句的返回值。通过next()方法的参数就有办法在Generator函数开始运行后继续向函数体内部注入值。
+4. for...of循环可以自动遍历Generator函数，且此时不在需要调用next()方法。
+5. 如果在Generator函数内部调用一个Generator函数，默认情况下是没有效果的，这时就需要用到yield*函数，用来在一个Generator函数里面执行另外一个Generato函数
 
 ### Promise对象
+1. Promise对象是一个构造函数，用来生成Promise实例；代表一个异步操作，有3种状态：Pending(进行中), Resolved(已完成), Rejected(已失败).Promise构造函数接受一个函数作为参数，该函数的两个参数分别是resolve和rejected，他们是两个函数，由JS引擎提供，不需要自己部署。
+2. resolve函数的作用是将promise对象的状态从未完成变成成功，在异步操作成功时调用，并将异步操作的结果作为参数传出去；rejected函数的作用是将promise对象从未完成变成失败，在异步操作失败后调用，并将异步操作的结果作为参数传出去。
+3. promise实例生成以后，可以用then方法分别指定resolved状态和rejected状态的回调函数。then方法是定义在原型对象Promise.prototype上的，它返回的是一个新的Promise实例，因此可以采用链式写法，即then方法后面再调用一个then方法；采用链式的then可以指定一组按照次序调用的回调函数，前一个回调函数完成后会将结果作为参数传给下一个回调函数。
+4. Promise.prototype.catch() 是then(null, rejection)的别名，用于指定发生错误时的回调函数。Promise对象的错误具有冒泡性质，会一直向后传递，直到被捕获为止，跟传统的try/catch不同，如果没有使用catch方法指定错误处理的回调函数，Promise对象抛出的错误不会传递到外层代码，即不会有任何反应。一般来说，不要在then方法中定义rejected状态的回调函数，而应该总是使用catch方法。catch方法返回的还是一个promise对象，因此后面还可以接着调用then方法。
+5. Promise.all()方法用于将多个Promise实例包装成一个新的Promise实例，它接受一个数组作为参数，该数组的元素都是promise对象的实例，如果不是，就会先调用Promise.resolve方法将参数转为promise实例
+6. Promise.race(), Promise.resolve(), Promise.reject().
 
 ### 异步操作和 async 函数
 1. ES6诞生前，异步编程的方法大概有以下几种：回调函数，事件监听，发布/订阅，Promise对象
