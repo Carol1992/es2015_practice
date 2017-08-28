@@ -4,7 +4,10 @@ app.use(express.static('static'));
 
 app.get('/', function (req, res) {
   res.redirect('/index.html');
-})
+});
+app.get('/face', function (req, res) {
+  res.redirect('/face-detection-demo/index.html');
+});
 
 // var http = require('https');
 // var options = {
