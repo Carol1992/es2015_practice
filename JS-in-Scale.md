@@ -9,14 +9,14 @@
 6. 当谈到javascript可扩展性的影响因素时，有三个主要领域需要关注：用户、功能、开发。
 7. 大型javascript应用实际上相当于一系列组件之间的互相通信，将业务逻辑与组件解耦
 
-### 组件之间的组合和组件之间的通信
+### 组件之间的组合
 1. 通用组件：模块、路由器、模型/集合、控制器/视图、模板。
 2. 路由器组件中的URI模式：一种是监听localtion.hash改变事件，一种是使用浏览历史API。
 3. 路由器组件中如何相应路由变化：一种是声明一个路由并绑定回调函数；一种是路由被激活时触发事件。
 4. 在架构方面关于路由的考虑：设计一个全局单一路由，还是每个模块一个路由。
 ```js
 // router.js
-import Events from 'events.js'
+import Events from 'events.js';
 
 export default class Router extends Events {
 	constructor(routes){
@@ -40,10 +40,155 @@ export default class Router extends Events {
 }
 
 //main.js
-import Router from 'router.js'
+import Router from 'router.js';
 function logRoute(){
 	console.log('${route}' activated);
 }
 var router = new Router({'#route1': logRoute});
 router.listen('#route2', logRoute);
 ```
+5. 模型/集合组件中，最好将诸如数据交换、API调用、事件生命周期的公用代码封装起来。
+```js
+class Model {
+	constructor(first, last, age){
+		this.first = first;
+		this.last = last;
+		this.age = age;
+	}
+}
+
+//视图基类
+class BaseView {
+	name(){
+		return '${this.model.first} ${this.model.last}';
+	}
+}
+
+//扩展视图基类
+class modelView extends BaseView {
+	constructor(model){
+		super();
+		this.model = model;
+	}
+}
+
+//使用参数扩展
+class modelView2 extends BaseView {
+	constructor(first, last, age){
+		super();
+		this.model = new Model(...arguments);
+	}
+}
+
+var prop = ['carol', 'lynn', 25];
+console.log('view1', new modelView(new Model(...prop)).name());
+console.log('view2', new modelView2(...prop).name());
+```
+6. 控制器/视图组件中，任务是响应DOM事件和更新DOM
+```js
+import Events from 'Events.js';
+class Model extends Events {
+	constructor(enabled){
+		super();
+		//not not converts a non-boolean to a boolean, then inverts it
+		this.enabled = !!enabled;
+	}
+
+	set enabled(enabled){
+		this._enabled = enabled;
+		this.trigger('enabled', enabled);
+	}
+
+	get enabled(enabled){
+		return this._enabled;
+	}
+
+	class View(elt, model){
+		model.listen('enabled', (enabled) => {
+			elt.setAttribute('disabled', !enabled);
+		});
+
+		elt.addEventListener('click', () => {
+			model.enabled = false;
+		});
+	}
+}
+
+new View(document.getElementById('set'), new Model());
+```
+7. 扩展通用组件：我们可以通过扩展框架中的通用视图组件来得到我们自己的通用版本的视图组件。应该避免扩展在三层以上，多于三层会带来可扩展性问题。
+8. 有两种构建组件的方法，其一，可以扩展已有的库和框架，通过不断扩展实现特定功能；其二，通过给组件传参数，告诉组件如何工作。扩展相对于配置的优势是调用者不必关心如何配置。
+9. 组件的代码放在一起，方便管理。
+10. 扩展模型/集合
+```js
+class BaseModel {
+	fetch(){
+		return new Promise((resolve, reject) => {
+			this.id = 1;
+			this.name = 'carol';
+			resolve(this);
+		});
+	}
+}
+
+class Model1 extends BaseModel {
+	fetch(){
+		return Promise.all({
+			super.fetch();
+			this.fetchSettings();
+		});
+	}
+
+	fetchSettings() {
+		return new Promise((resolve, reject) => {
+			this.enabled = true;
+			resolve(this);
+		})
+	}
+}
+new Model1().fetch().then((result) => {
+	var [model] = result;
+	console.log(model.id, model.name, model.enabled);
+})
+```
+10. 解构组件
+```js
+class Renderer {
+	constructor(renderer) {
+		this.renderer = renderer;
+	}
+
+	render() {
+		return this.renderer ? this.renderer(this) : '';
+	}
+}
+
+class Feature {
+	constructor(header, content, footer) {
+		this.header = header;
+		this.content = content;
+		this.footer = footer;
+	}
+
+	render() {
+		var header = this.header ? '${this.header.render()}\n' : '',
+			content = this.content ? '${this.content.render()}\n' : '',
+			footer = this.footer ? '${this.footer.render()}\n' : '';
+		return '${header}${content}${footer}';
+	}
+}
+
+var feature = new Feature(
+	new Renderer(() => {
+		return 'Header';
+	}),
+	new Renderer(() => {
+		return 'Content';
+	}),
+	new Renderer(() => {
+		return 'Footer';
+	}),
+)
+```
+
+### 组件之间的通信
