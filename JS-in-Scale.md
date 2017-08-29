@@ -192,3 +192,61 @@ var feature = new Feature(
 ```
 
 ### 组件之间的通信
+1. 有多种通信模型可以用来实现组件间通信，最简单的就是方法调用或者说函数调用。
+2. 通信模型：发布-订阅；命令-响应
+3. 可以使用whlie循环模拟对按钮的快速重复点击。
+4. 可追踪的组件通信
+```js
+//events.js
+
+export default class Events {
+	constructor(log){
+		this.log = log;
+		this.listeners = {};
+	}
+
+	trigger(name, data){
+		if(name in this.listeners){
+			var log = this.log;
+			return this.listeners[name].map(function(callback){
+				log && console.log('BEFORE', name);
+				var result = callback(Object.assign({name: name}, data));
+				log && console.log('AFTER', name);
+				return result;
+			});
+		}
+	}
+}
+
+//main.js
+import Events from 'Events.js';
+
+function callbackFirst(data){
+	console.log('CALLBACK', data.name);
+}
+
+function callbackLast(data){
+	setTimeout(function(){
+		console.log('CALLBACK', data.name);
+	}, 500);
+}
+
+var broker = new Events(true);
+broker.listen('first', callbackFirst);
+broker.listen('last', callbackLast);
+broker.trigger('first');
+broker.trigger('last');
+```
+5. 意外发生的优雅处理：try-throw-catch-finally
+
+### 寻址和导航
+
+### 用户偏好和默认设置
+
+### 加载时间和响应速度
+
+### 可移植性和测试
+
+### 缩小规模
+
+### 处理错误
