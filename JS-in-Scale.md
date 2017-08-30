@@ -151,7 +151,7 @@ new Model1().fetch().then((result) => {
 	console.log(model.id, model.name, model.enabled);
 })
 ```
-10. 解构组件
+11. 解构组件
 ```js
 class Renderer {
 	constructor(renderer) {
@@ -240,8 +240,106 @@ broker.trigger('last');
 5. 意外发生的优雅处理：try-throw-catch-finally
 
 ### 寻址和导航
+1. 在javascript里实现路由有两种方法。第一种是利用基于hash的URI，这种URI以#字符开头；另一种不太常用的方法是利用浏览器的history API生成更多传统的URI。
+2. 可以简单地把路由理解成一张映射表，它把一些路径、字符串、以及正则表达式的定义映射到回调函数。但是这个映射过程一定要足够块、容易预测，还要足够稳定。 
+```js
+//router.js
+import events from 'events.js';
+
+export default class Router {
+	constructor(){
+		this.routes = [];
+	} 
+
+	add(pattern, name) {
+		this.routes.push({
+			pattern: new RegExp('^' + pattern.replace(/:\w+/g, '(.*)')),
+			name: name
+		})
+	}
+}
+
+start() {
+	var onHashChange = () => {
+		for(let route of this.routes) {
+			let result = route.pattern.exec(location.hash.substr(1));
+			if(result) {
+				events.trigger('route:' + route.name, {values: result.splice(1)});
+				break;
+			}
+		}
+	};
+	 window.addEventListener('hashchange', onHashChange);
+	 onHashChange();
+}
+
+//model.js
+export default class Model {
+	constructor(pattern, id) {
+		this.pattern = pattern;
+		this.id = id;
+	}
+
+	get uri() {
+		return '#'+ this.pattern.replace(/:\w+/, this.id);
+	}
+}
+
+//user.js
+import Model from 'model.js';
+
+export default class User extends Model {
+	static pattern() {
+		return 'user/:id';
+	}
+
+	constructor(id) {
+		super(User.pattern(), id);
+	}
+}
+
+//group.js
+import Model from 'model.js';
+
+export default clss Group extends Model {
+	static pattern() {
+		return 'group/:id';
+	}
+
+	constructor(id) {
+		super(Group.pattern(), id);
+	}
+}
+
+//main.js
+import Router from 'router.js';
+import events from 'events.js';
+import User from 'user.js';
+import Group from 'group.js';
+
+var router = new Router();
+router.add(User.pattern(), 'user');
+router.add(Group.pattern(), 'group');
+
+events.listen('route:user', (data) => {
+	console.log(`User $(data.values[0]) activated`);
+});
+events.listen('route:group', (data) => {
+	console.log(`Group $(data.values[0]) activated`);
+});
+
+var user = new User(1);
+document.querySelector('.user').href = user.uri;
+
+var group = new Group(1);
+document.querySelector('.group').href = group.uri;
+
+router.start();
+```
 
 ### 用户偏好和默认设置
+1. 在设计大规模javascript系统时，主要关心的偏好类型有三种：地区、行为、外观。
+2. 用户选择好地区、外观后，可以把偏好值存在cookie中，下一次浏览器加载应用时，可以记住用户的这些行为。如果是账户控制这些行为的话，可以通过在登陆后使用API接口获取该用户的行为偏好。这样的话用户无论在哪台电脑登陆都可以保持原有的偏好设置。
 
 ### 加载时间和响应速度
 
