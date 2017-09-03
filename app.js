@@ -6,7 +6,10 @@ app.get('/', function (req, res) {
   res.redirect('/index.html');
 });
 app.get('/face', function (req, res) {
-  res.redirect('/face-detection-demo/index.html');
+  res.redirect('/face-detection-demo/index3.html');
+});
+app.get('/face2', function (req, res) {
+  res.redirect('/face-detection-demo/index2.html');
 });
 
 // var http = require('https');
